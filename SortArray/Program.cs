@@ -34,7 +34,7 @@ namespace SortArray
         public static int[] GetArray()
         {
             Random rnd = new Random();
-            int size = rnd.Next(5, 20);
+            int size = rnd.Next(50, 200);
 
             int[] arr = new int[size];
             Console.WriteLine("Array length: {0}", arr.Length);
@@ -42,7 +42,7 @@ namespace SortArray
             Console.WriteLine("Array (before sorting): ");
             for (int i = 0; i < arr.Length; i++)
             {
-                arr[i] = rnd.Next(-100, 100);
+                arr[i] = rnd.Next(-1000, 1000);
                 Console.Write("{0}\t", arr[i]);
             }
             return arr;
@@ -98,10 +98,12 @@ namespace SortArray
         {
             int[] arrQuick = arr;
             int i, j;
+            Random pivotRange = new Random();
             if (low < high)
             {
                 compares++;
-                int pivotIndex = (int)(high/2);
+
+                int pivotIndex = pivotRange.Next(low, high);
                 int newPivot = Partition(arrQuick, low, high, pivotIndex, ref compares, ref swaps);
 
                 QuickSort(arrQuick, low, newPivot - 1, ref compares, ref swaps);
