@@ -15,18 +15,7 @@ namespace SortArray
             int compares = 0;
             int swaps = 0;
             int[] arrQuick = QuickSort(myArray, 0, myArray.Length - 1, ref compares, ref swaps);
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("QuickSort");
-            Console.WriteLine();
-            Console.WriteLine("Compares: {0}", compares);
-            Console.WriteLine("Swaps: {0}", swaps);
-            Console.WriteLine();
-            Console.WriteLine("Array (after sorting): ");
-            for (int i = 0; i < arrQuick.Length; i++)
-            {
-                Console.Write("{0}\t", arrQuick[i]);
-            }
+            QuickSortWrite(arrQuick, compares, swaps);
             Console.ReadKey();
         }
 
@@ -144,10 +133,26 @@ namespace SortArray
             return storeIndex;
         }
 
+        public static void QuickSortWrite(int[] arrQuick, int compares, int swaps)
+        {
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("QuickSort");
+            Console.WriteLine();
+            Console.WriteLine("Compares: {0}", compares);
+            Console.WriteLine("Swaps: {0}", swaps);
+            Console.WriteLine();
+            Console.WriteLine("Array (after sorting): ");
+            for (int i = 0; i < arrQuick.Length; i++)
+            {
+                Console.Write("{0}\t", arrQuick[i]);
+            }
+        }
+        
 
 
 
 
 
-    }
+}
 }
