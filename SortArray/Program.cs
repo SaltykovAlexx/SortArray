@@ -10,20 +10,27 @@ namespace SortArray
     {
         static void Main(string[] args)
         {
-            int[] myArray = GetArray();
-            BubbleSort(myArray);
+            int[] myArray = GetArray(50, 200);
             int compares = 0;
             int swaps = 0;
+            int[] arrBubble = BubbleSort(myArray, ref compares, ref swaps);
+            BubbleWrite(arrBubble, compares, swaps);
+            compares = 0;
+            swaps = 0;
             int[] arrQuick = QuickSort(myArray, 0, myArray.Length - 1, ref compares, ref swaps);
             QuickSortWrite(arrQuick, compares, swaps);
+            int[,] myMatrix = GetMatrix(5, 10);
+            PrintMatrix(myMatrix);
+            int[,] mySnakeMatrix = GetMatrixSnake(5, 10);
+            PrintMatrix(mySnakeMatrix);
             Console.ReadKey();
         }
 
 
-        public static int[] GetArray()
+        public static int[] GetArray(int sizemin, int sizemax)
         {
             Random rnd = new Random();
-            int size = rnd.Next(50, 200);
+            int size = rnd.Next(sizemin, sizemax);
 
             int[] arr = new int[size];
             Console.WriteLine("Array length: {0}", arr.Length);
@@ -37,10 +44,152 @@ namespace SortArray
             return arr;
         }
 
-        public static int[] BubbleSort(int[] arr)
+        public static int[,] GetMatrix(int sizemin, int sizemax)
         {
-            int compares = 0;
-            int swaps = 0;
+            Random rnd = new Random();
+            int size = rnd.Next(sizemin, sizemax);
+
+            int[,] mat = new int[size, size];
+           for (int i = 0; i < mat.GetLength(0); i++)
+            {
+                for (int j = 0; j < mat.GetLength(1); j++)
+                {
+                    mat[i, j] = rnd.Next(-1000, 1000);
+                }
+            }
+            return mat;
+        }
+
+        public static int[,] GetMatrixSnake(int sizemin, int sizemax)
+        {
+            Random rnd = new Random();
+            int size = rnd.Next(sizemin, sizemax);
+
+            int[,] mat = new int[size, size];
+            int value = 1;
+            int row;
+            int column;
+
+
+
+            for (int diag = 0; diag < size; diag++)
+            {
+                if (diag % 2 == 0)
+                {
+                    row = 0;
+                    column = diag;
+
+                    while (column >= 0)
+                    {
+                        mat[row, column] = value;
+                        value++;
+                        row++;
+                        column--;
+                    }
+                }
+                else
+                {
+                    row = diag;
+                    column = 0;
+
+                    while (row >= 0)
+                    {
+                        mat[row, column] = value;
+                        value++;
+                        row--;
+                        column++;
+                    }
+                }
+            }
+            if(size % 2 == 0) { 
+                for (int diag = 1; diag < size; diag++)
+                {
+                    if (diag % 2 == 0)
+                    {
+                        row = size - 1;
+                        column = diag;
+
+                        while (column <= size - 1)
+                        {
+                            mat[row, column] = value;
+                            value++;
+                            row--;
+                            column++;
+                        }
+                    }
+                    else
+                    {
+                        row = diag;
+                        column = size - 1;
+
+                        while (row <= size - 1)
+                        {
+                            mat[row, column] = value;
+                            value++;
+                            row++;
+                            column--;
+                        }
+                    }
+                }
+            }
+            else {
+                for (int diag = 1; diag < size; diag++)
+                {
+                    if (diag % 2 == 0)
+                    {
+                        row = diag;
+                        column = size - 1;
+
+                        while (row <= size - 1)
+                        {
+                            mat[row, column] = value;
+                            value++;
+                            row++;
+                            column--;
+                        }
+                    }
+                    else
+                    {
+                        row = size - 1;
+                        column = diag;
+
+                        while (column <= size - 1)
+                        {
+                            mat[row, column] = value;
+                            value++;
+                            row--;
+                            column++;
+                        }
+                    }
+                }
+            }
+            return mat;
+            
+        }
+        public static int[,] PrintMatrix(int[,] mat)
+        { 
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("Matrix");
+            Console.WriteLine();
+            Console.WriteLine("Matrix rows: {0}", mat.GetLength(0));
+            Console.WriteLine("Matrix columns: {0}", mat.GetLength(1));
+            Console.WriteLine();
+            Console.WriteLine("Matrix (before sorting): ");
+            for (int i = 0; i < mat.GetLength(0); i++)
+            {
+                for (int j = 0; j < mat.GetLength(1); j++)
+                {
+                    Console.Write("{0}\t", mat[i, j]);
+                }
+                Console.Write("\n");
+            }
+            return mat;
+        }
+
+        public static int[] BubbleSort(int[] arr, ref int compares, ref int swaps)
+        {
+
             int i, j;
             int[] arrBubble = arr;
             for (i = 0; i < arrBubble.Length; i++)
@@ -60,6 +209,11 @@ namespace SortArray
                 }
                 
             }
+
+            return arrBubble;
+        }
+        public static int[] BubbleWrite(int[] arrBubble, int compares, int swaps)
+        {
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine("BubbleSort");
@@ -68,7 +222,7 @@ namespace SortArray
             Console.WriteLine("Swaps: {0}", swaps);
             Console.WriteLine();
             Console.WriteLine("Array (after sorting): ");
-            for (i = 0; i < arrBubble.Length; i++)
+            for (int i = 0; i < arrBubble.Length; i++)
             {
                 Console.Write("{0}\t", arrBubble[i]);
             }
@@ -86,7 +240,6 @@ namespace SortArray
         public static int[] QuickSort(int[] arr, int low, int high, ref int compares, ref int swaps)
         {
             int[] arrQuick = arr;
-            int i, j;
             Random pivotRange = new Random();
             if (low < high)
             {
@@ -104,7 +257,7 @@ namespace SortArray
             
         }
 
-        public static int Partition(int[] arr, int low, int high, int pivotIndex, ref int compares, ref int swaps)
+        private static int Partition(int[] arr, int low, int high, int pivotIndex, ref int compares, ref int swaps)
         {
             int pivotValue = arr[pivotIndex];
 
